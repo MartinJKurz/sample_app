@@ -5,29 +5,17 @@ gem 'rails', '3.0.9'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-# mkz: couldn't get snarl running, so
-# net-snarl, autotest-snarl, test_notifier are disabled
-# 
-
 gem 'sqlite3', '1.3.3'
 
 group :development do
   gem 'rspec-rails', '2.6.1'
   gem 'ZenTest'
-  gem 'autotest'
-#  gem 'net-snarl'
-#  gem 'autotest-snarl'
-#  gem 'test_notifier'
 end
 
 group :test do
   gem 'rspec-rails', '2.6.1'
   gem 'webrat', '0.7.1'
   gem 'ZenTest'
-  gem 'autotest'
-#  gem 'net-snarl'
-#  gem 'autotest-snarl'
-#  gem 'test_notifier'
 end
 
 # Use unicorn as the web server
