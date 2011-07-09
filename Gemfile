@@ -13,8 +13,11 @@ gem 'sqlite3', '1.3.3'
 
 group :development do
   gem 'rspec-rails', '2.6.1'
-  gem 'ZenTest'
-  gem 'autotest'
+  gem 'annotate', '2.4.0'
+  
+  #needed ??:
+#  gem 'ZenTest'
+#  gem 'autotest'
 #  gem 'net-snarl'
 #  gem 'autotest-snarl'
 #  gem 'test_notifier'
@@ -23,8 +26,8 @@ end
 group :test do
   gem 'rspec-rails', '2.6.1'
   gem 'webrat', '0.7.1'
-  gem 'ZenTest'
-  gem 'autotest'
+#  gem 'ZenTest'
+#  gem 'autotest'
 #  gem 'net-snarl'
 #  gem 'autotest-snarl'
 #  gem 'test_notifier'

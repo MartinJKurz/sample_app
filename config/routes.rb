@@ -1,7 +1,9 @@
 SampleApp::Application.routes.draw do
 
+  resources :users
+
   match '/signup',  :to => 'users#new'
-  get "users/new"
+#  get "users/new"
 
   match '/contact', :to => 'pages#contact'		# map url '/contact' to pages controller, action is 'contact'
   match '/about',   :to => 'pages#about'
