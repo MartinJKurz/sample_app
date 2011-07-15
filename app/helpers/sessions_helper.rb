@@ -1,12 +1,14 @@
 module SessionsHelper
 
   def sign_in(user)
+logger.debug "************************************************* sign_in"
     cookies.permanent.signed[:remember_token] = [user.id, user.salt]
     self.current_user = user
   end
   
   def signed_in?
-    !current_user.nil?
+	# !current_user.nil		# ERROR: undefined method `nil' for nil:NilClass
+    !current_user.nil?		# no ERROR
   end
   
   def sign_out
@@ -27,14 +29,6 @@ module SessionsHelper
     user == current_user
   end
 
-=begin
-  # old  
-  def deny_access
-    store_location
-    redirect_to signin_path, :notice => "Please sign in to access this page."
-  end
-=end
-  
   # new
   def authenticate
     deny_access unless signed_in?
@@ -44,10 +38,7 @@ module SessionsHelper
     store_location
     redirect_to signin_path, :notice => "Please sign in to access this page."
   end
-  
-  
-  
-  
+
   def redirect_back_or(default)
     redirect_to(session[:return_to] || default)
     clear_return_to
@@ -64,6 +55,9 @@ module SessionsHelper
     end
 	
 	def store_location
+logger.debug "*************************************************"
+logger.debug request.fullpath
+logger.debug "*************************************************"
       session[:return_to] = request.fullpath
     end
 

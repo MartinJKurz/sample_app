@@ -3,9 +3,10 @@ require 'spec_helper'
 describe UsersController do
   render_views
   
-  def show
-    @user = User.find(params[:id])
-  end
+  # ???
+#  def show
+#    @user = User.find(params[:id])
+#  end
 
   describe "GET 'index'" do
 
@@ -24,8 +25,7 @@ describe UsersController do
         second = Factory(:user, :name => "Bob", :email => "another@example.com")
         third  = Factory(:user, :name => "Ben", :email => "another@example.net")
 
-        @users = [@user, second, third]
-		
+		@users = [@user, second, third]
         30.times do
           @users << Factory(:user, :email => Factory.next(:email))
         end
@@ -41,21 +41,14 @@ describe UsersController do
         response.should have_selector("title", :content => "All users")
       end
 
-      it "should have an element for each user" do
-        get :index
-        @users.each do |user|
-          response.should have_selector("li", :content => user.name)
-        end
-      end
-	  
 	  it "should have an element for each user" do
         get :index
         @users[0..2].each do |user|
           response.should have_selector("li", :content => user.name)
         end
       end
-	  
-	  it "should paginate users" do
+
+      it "should paginate users" do
         get :index
         response.should have_selector("div.pagination")
         response.should have_selector("span.disabled", :content => "Previous")
@@ -270,31 +263,27 @@ describe UsersController do
       end
     end
   end
+
   
   describe "authentication of edit/update pages" do
 
     before(:each) do
       @user = Factory(:user)
     end
-	
-    describe "for non-signed-in users"
-=begin
+
     describe "for non-signed-in users" do
-	  # fail:
-	  # Expected: redirect to <http://test.host/signin> but 
-	  # result:               <http://test.host/>
+
       it "should deny access to 'edit'" do
         get :edit, :id => @user
         response.should redirect_to(signin_path)
       end
 
-	  # same fail
       it "should deny access to 'update'" do
         put :update, :id => @user, :user => {}
         response.should redirect_to(signin_path)
       end
     end
-=end	
+	
 	describe "for signed-in users" do
 
       before(:each) do
@@ -351,6 +340,43 @@ describe UsersController do
       it "should redirect to the users page" do
         delete :destroy, :id => @user
         response.should redirect_to(users_path)
+      end
+    end
+  end
+  
+  describe "follow pages" do
+
+    describe "when not signed in" do
+
+      it "should protect 'following'" do
+        get :following, :id => 1
+        response.should redirect_to(signin_path)
+      end
+
+      it "should protect 'followers'" do
+        get :followers, :id => 1
+        response.should redirect_to(signin_path)
+      end
+    end
+
+    describe "when signed in" do
+
+      before(:each) do
+        @user = test_sign_in(Factory(:user))
+        @other_user = Factory(:user, :email => Factory.next(:email))
+        @user.follow!(@other_user)
+      end
+
+      it "should show user following" do
+        get :following, :id => @user
+        response.should have_selector("a", :href => user_path(@other_user),
+                                           :content => @other_user.name)
+      end
+
+      it "should show user followers" do
+        get :followers, :id => @other_user
+        response.should have_selector("a", :href => user_path(@user),
+                                           :content => @user.name)
       end
     end
   end

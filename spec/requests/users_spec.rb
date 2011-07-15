@@ -46,7 +46,6 @@ describe "Users" do
       end
     end
 
-	#mkz
     describe "failure" do
       it "should not sign a user in 2" do
 	  
