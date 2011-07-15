@@ -1,10 +1,6 @@
 class MicropostsController < ApplicationController
-
   before_filter :authenticate, :only => [:create, :destroy]
   before_filter :authorized_user, :only => :destroy
-  
-  # if more actions are implemented, the before_filter might be restricted:
-  # before_filter :authenticate, :only => [:create, :destroy]
   
   def create
     @micropost = current_user.microposts.build(params[:micropost])
@@ -16,12 +12,12 @@ class MicropostsController < ApplicationController
       render 'pages/home'
     end
   end
-  
+
   def destroy
     @micropost.destroy
     redirect_back_or root_path
   end
-
+  
   private
 
     def authorized_user

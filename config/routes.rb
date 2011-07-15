@@ -1,9 +1,14 @@
 SampleApp::Application.routes.draw do
 
+  resources :users do
+    member do
+      get :following, :followers
+    end
+  end
+  
   resources :users
 
   match '/signup',  :to => 'users#new'
-#  get "users/new" - no longer needed
 
   match '/contact', :to => 'pages#contact'		# map url '/contact' to pages controller, action is 'contact'
   match '/about',   :to => 'pages#about'
@@ -16,13 +21,8 @@ SampleApp::Application.routes.draw do
   match '/signout', :to => 'sessions#destroy'
   
   resources :microposts, :only => [:create, :destroy]
-
-
-# old  
-#  get "pages/home"
-#  get "pages/contact"
-#  get "pages/about"
-#  get "pages/help"
+  
+  resources :relationships, :only => [:create, :destroy]
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
